@@ -6,7 +6,11 @@
 
 class GameScene: public Scene {
 private:
-	sf::CircleShape* shape;
+	sf::CircleShape* planet;
+	sf::CircleShape* ship;
+	sf::Vertex* vertex;
+	sf::View* view;
+	double zoom;
 public:
 	GameScene();
 	~GameScene();

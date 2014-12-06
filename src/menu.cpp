@@ -7,7 +7,7 @@
 MenuScene::MenuScene() {
 	std::cout << "Switched to MenuScene" << std::endl;
 	this->shape = new sf::CircleShape(100.f);
-	shape->setFillColor(sf::Color::Green);
+	shape->setFillColor(sf::Color::White);
 }
 
 MenuScene::~MenuScene(){
@@ -23,6 +23,8 @@ void MenuScene::loop_graphics(sf::RenderWindow& window){
 }
 
 void MenuScene::input(sf::Event& event){
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return))
-		switchScene(new GameScene());
+	//if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return))
+	if (event.type == sf::Event::EventType::KeyReleased)
+		if (event.key.code == sf::Keyboard::Return)
+			switchScene(new GameScene());
 }
