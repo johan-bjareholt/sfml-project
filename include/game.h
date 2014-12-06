@@ -1,13 +1,16 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include "scene.h"
 #include <SFML/Graphics.hpp>
+
+#include "scene.h"
+#include "celestialobject.h"
 
 class GameScene: public Scene {
 private:
-	sf::CircleShape* planet;
-	sf::CircleShape* ship;
+	CelestialObject* planet;
+	CelestialObject* ship;
+	std::vector<CelestialObject*> celestialObjects;
 	sf::Vertex* vertex;
 	sf::View* view;
 	double zoom;

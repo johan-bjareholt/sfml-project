@@ -1,4 +1,5 @@
 #include <iostream>
+#include <vector>
 
 #include "scene.h"
 #include "menu.h"
@@ -6,13 +7,16 @@
 
 GameScene::GameScene() {
 	std::cout << "Switched to GameScene" << std::endl;
-	this->planet = new sf::CircleShape(10000.f);
+	this->planet = new CelestialObject(10000.f, 1000);
 	this->planet->setFillColor(sf::Color::Green);
 	this->planet->setPosition(-10000,0);
 
-	this->ship = new sf::CircleShape(20.f);
+	this->ship = new CelestialObject(20.f);
 	this->ship->setFillColor(sf::Color::Yellow);
 	this->ship->setPosition(0,0);
+
+	celestialObjects.push_back(planet);
+	celestialObjects.push_back(ship);
 
 	this->vertex = new sf::Vertex(sf::Vector2f(10, 50), sf::Color::Red, sf::Vector2f(100, 100));
 
@@ -32,15 +36,19 @@ void GameScene::loop_graphics(sf::RenderWindow& window){
 	window.draw(*ship);
 }
 void GameScene::loop_logic(){
-	int speed = 30;
+	float speed = 0.02;
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-		this->ship->move(speed,0);
+		this->ship->accelerate(speed,0.f);
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-		this->ship->move(-speed,0);
+		this->ship->accelerate(-speed,0.f);
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-		this->ship->move(0,-speed);
+		this->ship->accelerate(0.f,-speed);
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-		this->ship->move(0,speed);
+		this->ship->accelerate(0.f,speed);
+
+	for (int co=0; co<celestialObjects.size(); co++){
+		celestialObjects[co]->move(celestialObjects[co]->getAcceleration());
+	}
 
 	int cameraW = 350*zoom;
 	int cameraH = 200*zoom;
