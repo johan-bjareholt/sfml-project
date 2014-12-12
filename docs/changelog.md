@@ -1,6 +1,20 @@
 Changelog
 =========
 
+### 8 dec
+
+#### 13:45
+Started working on universal gravitation.
+Partitially works
+
+
+### 6 dec
+
+#### 19:28
+Created a celestial object class.
+Ship now accelerates instead.
+Camera works better
+
 ### 5 dec
 
 #### 23:40

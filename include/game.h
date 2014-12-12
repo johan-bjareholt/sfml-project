@@ -2,6 +2,7 @@
 #define GAME_H
 
 #include <SFML/Graphics.hpp>
+#include <vector>
 
 #include "scene.h"
 #include "celestialobject.h"
@@ -9,6 +10,7 @@
 class GameScene: public Scene {
 private:
 	CelestialObject* planet;
+	CelestialObject* moon;
 	CelestialObject* ship;
 	std::vector<CelestialObject*> celestialObjects;
 	sf::Vertex* vertex;

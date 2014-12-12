@@ -12,7 +12,7 @@ void createWindow(sf::Vector2u size, std::string title){
     // Create window
     window = new sf::RenderWindow(sf::VideoMode(size.x, size.y), title, windowOptions);
     // Uncomment to enable vsync
-    //window.setVerticalSyncEnabled(true);
+    window->setVerticalSyncEnabled(true);
 }
 
 void deleteWindow(){
