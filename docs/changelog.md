@@ -1,6 +1,10 @@
 Changelog
 =========
 
+### 12 dec
+Code for universal gravitation with CelestialObjects is much cleaner.
+Almost functions as it should
+
 ### 8 dec
 
 #### 13:45
