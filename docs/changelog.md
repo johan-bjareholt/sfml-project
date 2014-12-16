@@ -1,6 +1,14 @@
 Changelog
 =========
 
+### 16 dec
+
+#### 09:40
+Universal gravitation force is now applied in correct direction, although the force amount is a little messed up.
+Preparation for dynamic mass of celestial objects
+Now loads fonts for text
+
+
 ### 12 dec
 Code for universal gravitation with CelestialObjects is much cleaner.
 Almost functions as it should

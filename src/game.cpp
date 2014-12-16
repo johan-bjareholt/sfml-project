@@ -7,22 +7,22 @@
 
 GameScene::GameScene() {
 	std::cout << "Switched to GameScene" << std::endl;
-	this->planet = new CelestialObject(10000.f, 5000);
+	this->planet = new CelestialObject(10000.f);
 	this->planet->setFillColor(sf::Color(0,255,0));
 	this->planet->setPosition(-10000,0);
 
-	this->moon = new CelestialObject(500.f, 250);
+	this->moon = new CelestialObject(1000.f);
 	this->moon->setFillColor(sf::Color(175,175,175));
-	this->moon->setPosition(-500,-5000);
+	this->moon->setPosition(50000,-50000);
 	this->moon->accelerate(0.0f, 0.0f);
 
-	this->ship = new CelestialObject(20.f);
+	this->ship = new CelestialObject(50.f);
 	this->ship->setFillColor(sf::Color::Yellow);
 	this->ship->setPosition(0,0);
 
-	celestialObjects.push_back(ship);
-	celestialObjects.push_back(planet);
-	//celestialObjects.push_back(moon);
+	this->celestialObjects.push_back(ship);
+	this->celestialObjects.push_back(moon);
+	this->celestialObjects.push_back(planet);
 
 	this->vertex = new sf::Vertex(sf::Vector2f(10, 50), sf::Color::Red, sf::Vector2f(100, 100));
 
@@ -44,7 +44,7 @@ void GameScene::loop_graphics(sf::RenderWindow& window){
 	window.draw(*ship);
 }
 void GameScene::loop_logic(){
-	float speed = 0.5;
+	float speed = 5;
 	// Spaceship movements
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 		this->ship->accelerate(speed,0.f);
@@ -55,8 +55,7 @@ void GameScene::loop_logic(){
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 		this->ship->accelerate(0.f,speed);
 
-	const float PI = std::asin(-1);
-	for (int co=0; co<celestialObjects.size(); co++){
+	for (int co=0; co<celestialObjects.size()-1; co++){
 		CelestialObject* selectedObject = celestialObjects[co];
 		float m1 = selectedObject->getRadius();
 
@@ -65,19 +64,31 @@ void GameScene::loop_logic(){
 			CelestialObject* targetObject = celestialObjects[co2];
 			float m2 = targetObject->getRadius();
 			// Calculate total force
-			float G = 0.5;
-			float r = m1+m2;
-			float force = G*((m1*m2)/r);
+			float G = 300;
+			float r = selectedObject->getRadius()+targetObject->getRadius();
+			float force = G*((m1*m2)/(r*r));
 			// Get x and y distance between objects
 			sf::Vector2f distance = selectedObject->getDistance(*targetObject);
 			std::cout << distance.x << "," << distance.y << std::endl;
-			// Calculate angle between objects
-			float forceAngle = selectedObject->getAngle(*targetObject);
-			double moveX = std::cos(forceAngle)*force/targetObject->getRadius();
-			double moveY = std::sin(forceAngle)*force/targetObject->getRadius();
-			selectedObject->accelerate(moveX, moveY);
-			targetObject->accelerate(-moveX, -moveY);
-			std::cout << forceAngle<<":"<< moveX << "," << moveY << std::endl;
+			// Chech for collision
+			double hypo = sqrt(pow(distance.x,2)+pow(distance.y,2));
+			if (hypo<r)
+				std::cout << "Planets are colliding!" << std::endl;
+
+			else {
+				// Calculate angle between objects
+				float forceAngle = selectedObject->getAngle(*targetObject);
+				// Calculate gravitational force
+				double moveselectedX = std::cos(forceAngle)*force/selectedObject->getRadius();
+				double moveselectedY = std::sin(forceAngle)*force/selectedObject->getRadius();
+				double movetargetX = std::cos(forceAngle)*force/targetObject->getRadius();
+				double movetargetY = std::sin(forceAngle)*force/targetObject->getRadius();
+				// Apply gravitational force
+				selectedObject->accelerate(-moveselectedX, moveselectedY);
+				targetObject->accelerate(movetargetX, movetargetY);
+				std::cout << forceAngle << ":" << movetargetX << "," << movetargetY << std::endl;
+				std::cout << "cos: " << std::cos(forceAngle) << " sin:" << std::sin(forceAngle) << std::endl;
+			}
 		}
 		selectedObject->move(selectedObject->getAcceleration());
 	}
@@ -87,10 +98,24 @@ void GameScene::loop_logic(){
 	// Calculate new camera position and size
 	int cameraW = 350*zoom;
 	int cameraH = 200*zoom;
-	int cameraX = this->ship->getPosition().x-(cameraW/2);
-	int cameraY = this->ship->getPosition().y-(cameraH/2);
+	double cameraX = this->ship->getPosition().x-(cameraW/2)+this->ship->getRadius();
+	double cameraY = this->ship->getPosition().y-(cameraH/2)+this->ship->getRadius();
 	// Update camera view
 	this->view = new sf::View(sf::FloatRect(cameraX, cameraY, cameraW, cameraH));
+
+/*
+	sf::Text text;
+	// select the font
+	text.setFont(font); // font is a sf::Font
+	// set the string to display
+	text.setString("Hello world");
+	// set the character size
+	text.setCharacterSize(24); // in pixels, not points!
+	// set the color
+	text.setColor(sf::Color::Black);
+	// inside the main loop, between window.clear() and window.display()
+	window.draw(text);
+*/
 }
 
 void GameScene::input(sf::Event& event){
