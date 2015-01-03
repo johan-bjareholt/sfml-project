@@ -1,6 +1,13 @@
 Changelog
 =========
 
+### 3 jan
+
+Added drawgroup class
+Fonts are now working and in use
+Started working on mouse support within zoomed view
+Changes in universal gravitation
+
 ### 16 dec
 
 #### 09:40

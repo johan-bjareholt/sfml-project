@@ -2,11 +2,12 @@
 #define MENU_H
 
 #include "scene.h"
+#include "drawgroup.h"
 #include <SFML/Graphics.hpp>
 
 class MenuScene: public Scene {
 private:
-	sf::CircleShape* shape;
+	DrawGroup* drawgroup;
 public:
 	MenuScene();
 	~MenuScene();

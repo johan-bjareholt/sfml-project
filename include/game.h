@@ -5,15 +5,16 @@
 #include <vector>
 
 #include "scene.h"
+#include "drawgroup.h"
 #include "celestialobject.h"
 
 class GameScene: public Scene {
 private:
-	CelestialObject* planet;
-	CelestialObject* moon;
+	DrawGroup bodies;
+	DrawGroup gui;
 	CelestialObject* ship;
-	std::vector<CelestialObject*> celestialObjects;
 	sf::Vertex* vertex;
+	sf::Text* text;
 	sf::View* view;
 	double zoom;
 public:

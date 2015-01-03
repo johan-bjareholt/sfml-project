@@ -9,7 +9,7 @@ private:
 	double mass;
 public:
 	CelestialObject(float radius, float mass=0);
-	
+
 	void accelerate(float,float);
 	void setAcceleration(float,float);
 	sf::Vector2f& getAcceleration();

@@ -6,5 +6,6 @@
 sf::RenderWindow* getWindow();
 void createWindow(sf::Vector2u size, std::string title);
 void deleteWindow();
+sf::Font& getFont();
 
 #endif
