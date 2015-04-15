@@ -1,6 +1,12 @@
 Changelog
 =========
 
+### 15 apr
+
+Fixes for universal gravitation, now works pretty well
+Fixed memory leak
+Fixed seperate SFML views for GUI and the game entities
+
 ### 3 jan
 
 Added drawgroup class

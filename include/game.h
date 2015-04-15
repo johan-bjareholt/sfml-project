@@ -15,7 +15,8 @@ private:
 	CelestialObject* ship;
 	sf::Vertex* vertex;
 	sf::Text* text;
-	sf::View* view;
+	sf::View* gameview;
+	sf::View* guiview;
 	double zoom;
 public:
 	GameScene();
