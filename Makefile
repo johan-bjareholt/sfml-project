@@ -1,13 +1,31 @@
 
 NAME=SFML\ project
 CXX=g++
-CPPFLAGS=-std=c++11 -g
+
 LIBS=-lsfml-graphics -lsfml-window -lsfml-system
-INCLUDE=-I./include
+INCLUDES=-I./include
 
-SRC=src/main.cpp src/menu.cpp src/game.cpp src/scene.cpp src/graphics.cpp src/celestialobject.cpp src/drawgroup.cpp
+CPPFLAGS =-std=c++11 -g
+CPPFLAGS += $(LIBS)
+CPPFLAGS += $(INCLUDES)
+LDFLAGS	 = $(LIBS)
 
+# File names
+FILEN=main menu game scene graphics celestialobject drawgroup
+# Prepend src/ directory to filenames
+FILEL=$(patsubst %,src/%,$(FILEN))
 
-all:
+SRC=$(patsubst %,%.cpp,$(FILEL))
+OBJ=$(patsubst %,%.o,$(FILEL))
+
+$(NAME): $(OBJ)
 	mkdir -p ./bin
-	$(CXX) $(CPPFLAGS) $(INCLUDE) $(LIBS) $(SRC) -o ./bin/$(NAME)
+	$(CXX) $(LDFLAGS) $(OBJ) -o ./bin/$(NAME)
+
+.PHONY: all
+all:
+	$(NAME)
+
+.PHONY: clean
+clean:
+	rm src/*.o
