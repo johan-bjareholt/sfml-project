@@ -2,10 +2,12 @@
 
 #include <SFML/Graphics.hpp>
 
-
+#include "main.h"
 #include "graphics.h"
 #include "scene.h"
 #include "menu.h"
+
+sf::Time deltaTime;
 
 int main()
 {
@@ -19,8 +21,13 @@ int main()
     switchScene(new MenuScene());
     Scene* currentScene = getScene();
 
+    // Delta clock for frame time
+    sf::Clock deltaClock = sf::Clock();
+
     while (window->isOpen())
     {
+        // Update frame time
+        deltaTime = deltaClock.restart();
         // Update scene if it has changed
         currentScene = getScene();
         // Input

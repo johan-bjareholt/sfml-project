@@ -1,0 +1,2 @@
+
+extern sf::Time deltaTime;

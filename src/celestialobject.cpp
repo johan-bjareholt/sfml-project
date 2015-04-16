@@ -1,51 +1,87 @@
 #include <cmath>
+#include <iostream>
 
 const float PI = std::asin(-1);
 
 #include "celestialobject.h"
 
 CelestialObject::CelestialObject(float radius, float mass) : sf::CircleShape(radius, radius/2){
-	this->acceleration = sf::Vector2f(0.0f,0.0f);
+	this->setOrigin(radius, radius);
+	this->speed = sf::Vector2f(0.0f,0.0f);
 	if (mass <= 0)
-		this->mass = pow(radius,2)*PI;
+		this->setMass(radius*radius*PI*100);
 	else
-		this->mass = mass;
+		this->setMass(mass);
 }
 
 void CelestialObject::accelerate(float x, float y){
-	this->acceleration.x += x;
-	this->acceleration.y += y;
+	this->speed.x += x;
+	this->speed.y += y;
 }
 
 void CelestialObject::setAcceleration(float x, float y){
-	this->acceleration.x = x;
-	this->acceleration.y = y;
+	this->speed.x = x;
+	this->speed.y = y;
 }
 
 
-sf::Vector2f& CelestialObject::getAcceleration(){
-	return this->acceleration;
+sf::Vector2f& CelestialObject::getSpeed(){
+	return this->speed;
 }
 
-double CelestialObject::getMass(){
+float CelestialObject::getMass(){
 	return this->mass;
 }
 
-void CelestialObject::setMass(double mass){
+void CelestialObject::setMass(float mass){
 	this->mass = mass;
 }
 
-sf::Vector2f CelestialObject::getDistance(sf::CircleShape& otherObject){
+sf::Vector2f CelestialObject::getDistanceVector(const sf::Vector2f& point){
 	sf::Vector2f distance(0,0);
-	distance.x = (this->getPosition().x + this->getRadius())-
-				 (otherObject.getPosition().x + otherObject.getRadius());
-	distance.y = (this->getPosition().y + this->getRadius())-
-				 (otherObject.getPosition().y + otherObject.getRadius());
+	distance.x = (this->getPosition().x - point.x);
+	distance.y = (this->getPosition().y - point.y);
 	return distance;
 }
 
+sf::Vector2f CelestialObject::getDistanceVector(sf::CircleShape& otherObject){
+	return this->getDistanceVector(otherObject.getPosition());
+}
+
+float CelestialObject::getDistance(const sf::Vector2f& point){
+	sf::Vector2f distance = this->getDistanceVector(point);
+	return sqrt(pow(distance.x,2)+pow(distance.y,2));
+}
+
+float CelestialObject::getDistance(sf::CircleShape& otherObject){
+	return this->getDistance(this->getDistanceVector(otherObject));
+}
+
+bool CelestialObject::getCollision(sf::Vector2f& point){
+	sf::Vector2f position = this->getPosition();
+	position.x += this->getRadius();
+	position.y += this->getRadius();
+	sf::Vector2f distance(position.x-point.x, position.y-point.y);
+	float hypo = sqrt(pow(distance.x,2)+pow(distance.y,2));
+	std::cout << distance.x << "," << distance.y << "=" << hypo << std::endl;
+	if (hypo < this->getRadius())
+		return true;
+	else
+		return false;
+}
+
+bool CelestialObject::getCollision(sf::CircleShape& other){
+	sf::Vector2f distance = this->getDistanceVector(other);
+	float rsum = this->getRadius() + other.getRadius();
+	float hypolen = sqrt(pow(distance.x,2)+pow(distance.y,2));
+	if (hypolen < rsum)
+		return true;
+	else
+		return false;
+}
+
 float CelestialObject::getAngle(sf::CircleShape& otherObject){
-	sf::Vector2f distance = this->getDistance(otherObject);
-	float angle=std::atan2(-distance.y,distance.x);
+	sf::Vector2f distance = this->getDistanceVector(otherObject);
+	float angle=std::atan2(distance.y,distance.x);
 	return angle;
 }
