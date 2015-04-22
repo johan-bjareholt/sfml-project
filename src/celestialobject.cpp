@@ -5,7 +5,7 @@ const float PI = std::asin(-1);
 
 #include "celestialobject.h"
 
-CelestialObject::CelestialObject(float radius, float mass) : sf::CircleShape(radius, radius/2){
+CelestialObject::CelestialObject(float radius, float mass) : sf::CircleShape(radius, radius){
 	this->setOrigin(radius, radius);
 	this->speed = sf::Vector2f(0.0f,0.0f);
 	if (mass <= 0)
@@ -59,8 +59,6 @@ float CelestialObject::getDistance(sf::CircleShape& otherObject){
 
 bool CelestialObject::getCollision(sf::Vector2f& point){
 	sf::Vector2f position = this->getPosition();
-	position.x += this->getRadius();
-	position.y += this->getRadius();
 	sf::Vector2f distance(position.x-point.x, position.y-point.y);
 	float hypo = sqrt(pow(distance.x,2)+pow(distance.y,2));
 	std::cout << distance.x << "," << distance.y << "=" << hypo << std::endl;
@@ -78,6 +76,13 @@ bool CelestialObject::getCollision(sf::CircleShape& other){
 		return true;
 	else
 		return false;
+}
+
+void CelestialObject::onCollision(CelestialObject& other){
+	/*
+		Implement impulse algorithm
+	*/
+	//std::cout << "Planets are colliding!" << std::endl;
 }
 
 float CelestialObject::getAngle(sf::CircleShape& otherObject){

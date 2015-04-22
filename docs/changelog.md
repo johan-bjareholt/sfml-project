@@ -1,6 +1,14 @@
 Changelog
 =========
 
+### 22 apr
+
+- Mouse aiming at world objects now works
+- Made a placeholder for CelestialObject collision
+- Changed spaceship steering from arrowkeys to WASD
+- Some more notes in the code
+- Moon now has a better orbit
+
 ### 16 apr
 
 Major gravitational improvements, close to done. When it's done, i can start working on actual content rather than game logic.

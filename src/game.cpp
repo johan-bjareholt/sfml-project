@@ -17,10 +17,10 @@ GameScene::GameScene() {
 	CelestialObject* moon = new CelestialObject(1000.f);
 	moon->setFillColor(sf::Color(175,175,175));
 	moon->setPosition(0,30000);
-	moon->accelerate(-1000.0f, 0.0f);
+	moon->accelerate(-1500.0f, 0.0f);
 	this->bodies.add(*moon);
 
-	this->ship = new CelestialObject(50.f);
+	this->ship = new CelestialObject(10.f);
 	ship->setFillColor(sf::Color::Yellow);
 	ship->setPosition(0,12000);
 	this->bodies.add(*ship);
@@ -61,22 +61,23 @@ void GameScene::loop_graphics(sf::RenderWindow& window){
 	gui.draw(window);
 }
 void GameScene::loop_logic(){
+	// Spaceship WASD movement
 	float speed = 100;
-	// Spaceship movements
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 		this->ship->accelerate(speed,0.f);
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 		this->ship->accelerate(-speed,0.f);
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
 		this->ship->accelerate(0.f,speed);
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
 		this->ship->accelerate(0.f,-speed);
 
+	// Iterate over all celestial objects
 	for (int co=0; co<bodies.size(); co++){
 		CelestialObject* selectedObject = dynamic_cast<CelestialObject*>(bodies[co]);
 		float m1 = selectedObject->getMass();
 
-		// Calculate applied force by all other celestial objects
+		// Calculate force on/from all other celestial objects
 		for (int co2=co+1; co2<bodies.size(); co2++){
 			if (co2 != co){
 				CelestialObject* targetObject = dynamic_cast<CelestialObject*>(bodies[co2]);
@@ -87,7 +88,7 @@ void GameScene::loop_logic(){
 				float r = selectedObject->getDistance(*targetObject);
 				float force = G*((m1*m2)/(r*r));
 				if (selectedObject->getCollision(*targetObject)){
-					//std::cout << "Planets are colliding!" << std::endl;
+					selectedObject->onCollision(*targetObject);
 				}
 
 				else {
@@ -100,7 +101,7 @@ void GameScene::loop_logic(){
 					float targetSpeed = force/targetObject->getMass();
 					//float targetSpeed = force*selectedObject->getMass();
 
-					std::cout << force << std::endl;
+					//std::cout << force << std::endl;
 
 					// Calculate gravitational force
 					float accselectedX = std::cos(forceAngle)*selectedSpeed*deltaTime.asSeconds();
@@ -118,6 +119,7 @@ void GameScene::loop_logic(){
 				}
 			}
 		}
+		// Apply force
 		selectedObject->move(selectedObject->getSpeed()*deltaTime.asSeconds());
 	}
 
@@ -126,31 +128,39 @@ void GameScene::loop_logic(){
 	int cameraH = -200*zoom;
 	double cameraX = this->ship->getPosition().x-(cameraW/2)+this->ship->getRadius();
 	double cameraY = this->ship->getPosition().y-(cameraH/2)+this->ship->getRadius();
-	// Update camera view
+
+	// Update gameview
 	this->gameview->reset(sf::FloatRect(cameraX, cameraY, cameraW, cameraH));
 }
 
 void GameScene::input(sf::Event& event){
+	// Escape
 	if (event.type == sf::Event::EventType::KeyReleased)
 		if (event.key.code == sf::Keyboard::Escape)
 			switchScene(new MenuScene());
+
+	/*
+		Mouse
+	*/
+	// Zoom in/out
 	if (event.type == sf::Event::EventType::MouseWheelMoved){
 		if (event.mouseWheel.delta < 0)
 			zoom *= -event.mouseWheel.delta*0.95;
 		else
 			zoom *= event.mouseWheel.delta*1.05;
 	}
+	// Mouse interaction with game view
 	if (event.type == sf::Event::EventType::MouseMoved){
+		// Get mouse pos
+		sf::Vector2i mousepos = sf::Mouse::getPosition(*getWindow());
+		// Convert mouse pos to world pos
 		sf::Vector2f mouseposworld =
-			getWindow()->mapPixelToCoords(sf::Mouse::getPosition(), *this->gameview);
-		std::cout << "Mousepos: " << sf::Mouse::getPosition().x << "," << sf::Mouse::getPosition().y << std::endl;
-		std::cout << "Mouseposworld: " << mouseposworld.x << "," << mouseposworld.y << std::endl;
-		for (int co=2; co<bodies.size(); co++){
-			CelestialObject* targetObject = dynamic_cast<CelestialObject*>(bodies[0]);
-			//std::cout << "Planet: " << targetObject->getPosition().x << "," << targetObject->getPosition().y << std::endl;
-			//std::cout << "Mouse: " << mousepos.x << "," << mousepos.y << std::endl;
+			getWindow()->mapPixelToCoords(mousepos, *this->gameview);
+		// Check each planet for
+		for (int co=0; co<bodies.size(); co++){
+			CelestialObject* targetObject = dynamicma_cast<CelestialObject*>(bodies[co]);
 			if (targetObject->getCollision(mouseposworld)){
-				std::cout << "Mouse collides with a planet!" << std::endl;
+				std::cout << "Mouse is pointing at a planet!" << std::endl;
 			}
 		}
 	}

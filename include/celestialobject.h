@@ -23,6 +23,7 @@ public:
 	float getDistance(sf::CircleShape&); // Distance for CircleShapes
 	bool getCollision(sf::Vector2f& point); // Collision check for points
 	bool getCollision(sf::CircleShape&); // Collision check for CircleShape
+	void onCollision(CelestialObject& other);
 	float getAngle(sf::CircleShape&);
 };
 
