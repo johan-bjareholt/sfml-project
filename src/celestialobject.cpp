@@ -5,7 +5,8 @@ const float PI = std::asin(-1);
 
 #include "celestialobject.h"
 
-CelestialObject::CelestialObject(float radius, float mass) : sf::CircleShape(radius, radius){
+CelestialObject::CelestialObject(float radius, float mass, std::string name) : sf::CircleShape(radius, radius){
+	this->name = name;
 	this->setOrigin(radius, radius);
 	this->speed = sf::Vector2f(0.0f,0.0f);
 	if (mass <= 0)
@@ -24,6 +25,9 @@ void CelestialObject::setAcceleration(float x, float y){
 	this->speed.y = y;
 }
 
+std::string CelestialObject::getName(){
+	return this->name;
+}
 
 sf::Vector2f& CelestialObject::getSpeed(){
 	return this->speed;

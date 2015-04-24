@@ -1,4 +1,5 @@
 #include <iostream>
+#include <sstream>
 #include <cmath>
 
 #include "scene.h"
@@ -10,17 +11,17 @@
 
 GameScene::GameScene() {
 	std::cout << "Switched to GameScene" << std::endl;
-	CelestialObject* planet = new CelestialObject(10000.f);
+	CelestialObject* planet = new CelestialObject(10000.f, 0, "Earth");
 	planet->setFillColor(sf::Color(0,255,0));
 	this->bodies.add(*planet);
 
-	CelestialObject* moon = new CelestialObject(1000.f);
+	CelestialObject* moon = new CelestialObject(1000.f, 0, "Moon");
 	moon->setFillColor(sf::Color(175,175,175));
 	moon->setPosition(0,30000);
 	moon->accelerate(-1500.0f, 0.0f);
 	this->bodies.add(*moon);
 
-	this->ship = new CelestialObject(10.f);
+	this->ship = new CelestialObject(10.f, 0, "Spaceship");
 	ship->setFillColor(sf::Color::Yellow);
 	ship->setPosition(0,12000);
 	this->bodies.add(*ship);
@@ -30,17 +31,24 @@ GameScene::GameScene() {
 	zoom = 3;
 
 
-	text = new sf::Text();
+	infoText = new sf::Text();
+	infoText2 = new sf::Text();
+	infoText2->setPosition(0,30);
 	// select the font
-	text->setFont(getFont()); // font is a sf::Font
-	// set the string to displayide a computer which can distort the analog signals. How bad is your onboard audio? If its good I'd skip the DAC and
-	text->setString("Hello world");
-	// set the character size
-	text->setCharacterSize(24); // in pixels, not points!
+	infoText->setFont(getFont()); // font is a sf::Font
+	infoText2->setFont(getFont());
+	// set the string to display
+	infoText->setString("");
+	infoText2->setString("");
+	// set the character size (in pixels, not points)
+	infoText->setCharacterSize(24);
+	infoText2->setCharacterSize(24);
 	// set the color
-	text->setColor(sf::Color::White);
+	infoText->setColor(sf::Color::White);
+	infoText2->setColor(sf::Color::White);
 	// inside the main loop, between window.clear() and window.display()
-	this->gui.add(*text);
+	this->gui.add(*infoText);
+	this->gui.add(*infoText2);
 
 	this->guiview = new sf::View(sf::FloatRect(0,0,1280,720));
 	this->gameview = new sf::View();
@@ -123,6 +131,14 @@ void GameScene::loop_logic(){
 		selectedObject->move(selectedObject->getSpeed()*deltaTime.asSeconds());
 	}
 
+	// GUI
+	if (this->selectedEntity != nullptr){
+		std::stringstream ss;
+		ss	<< "X:" << this->selectedEntity->getPosition().x
+			<< ", Y:" << this->selectedEntity->getPosition().y;
+		this->infoText2->setString(ss.str());
+	}
+
 	// Calculate new camera position and size
 	int cameraW = 350*zoom;
 	int cameraH = -200*zoom;
@@ -150,7 +166,7 @@ void GameScene::input(sf::Event& event){
 			zoom *= event.mouseWheel.delta*1.05;
 	}
 	// Mouse interaction with game view
-	if (event.type == sf::Event::EventType::MouseMoved){
+	if (event.type == sf::Event::EventType::MouseButtonReleased){
 		// Get mouse pos
 		sf::Vector2i mousepos = sf::Mouse::getPosition(*getWindow());
 		// Convert mouse pos to world pos
@@ -158,9 +174,11 @@ void GameScene::input(sf::Event& event){
 			getWindow()->mapPixelToCoords(mousepos, *this->gameview);
 		// Check each planet for
 		for (int co=0; co<bodies.size(); co++){
-			CelestialObject* targetObject = dynamicma_cast<CelestialObject*>(bodies[co]);
+			CelestialObject* targetObject = dynamic_cast<CelestialObject*>(bodies[co]);
 			if (targetObject->getCollision(mouseposworld)){
 				std::cout << "Mouse is pointing at a planet!" << std::endl;
+				this->infoText->setString(targetObject->getName());
+				this->selectedEntity = targetObject;
 			}
 		}
 	}

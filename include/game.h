@@ -14,7 +14,9 @@ private:
 	DrawGroup gui;
 	CelestialObject* ship;
 	sf::Vertex* vertex;
-	sf::Text* text;
+	CelestialObject* selectedEntity;
+	sf::Text* infoText;
+	sf::Text* infoText2;
 	sf::View* gameview;
 	sf::View* guiview;
 	double zoom;

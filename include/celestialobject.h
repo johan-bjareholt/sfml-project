@@ -2,18 +2,21 @@
 #define CELESTIALOBJECT_H
 
 #include <SFML/Graphics.hpp>
+#include <string>
 
 class CelestialObject : public sf::CircleShape {
 private:
+	std::string name;
 	sf::Vector2f speed;
 	float mass;
 public:
-	CelestialObject(float radius, float mass=0);
+	CelestialObject(float radius, float mass=0, std::string name="Unnamed");
 
 	void accelerate(float,float);
 	void setAcceleration(float,float);
 	sf::Vector2f& getSpeed();
 
+	std::string getName();
 	float getMass();
 	void setMass(float);
 

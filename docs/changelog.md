@@ -1,6 +1,11 @@
 Changelog
 =========
 
+### 24 apr
+
+- CelestialObjects now have a name
+- Infobox implemented. Press on a planet and information about it will be showed in the topleft corner
+
 ### 22 apr
 
 - Mouse aiming at world objects now works
