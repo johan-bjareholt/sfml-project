@@ -9,19 +9,23 @@
 #include "graphics.h"
 #include "main.h"
 
+#include "celestialobject.h"
+#include "planet.h"
+#include "spaceship.h"
+
 GameScene::GameScene() {
 	std::cout << "Switched to GameScene" << std::endl;
-	CelestialObject* planet = new CelestialObject(10000.f, 0, "Earth");
+	Planet* planet = new Planet(10000.f, 0, "Earth");
 	planet->setFillColor(sf::Color(0,255,0));
 	this->bodies.add(*planet);
 
-	CelestialObject* moon = new CelestialObject(1000.f, 0, "Moon");
+	Planet* moon = new Planet(1000.f, 0, "Moon");
 	moon->setFillColor(sf::Color(175,175,175));
 	moon->setPosition(0,30000);
 	moon->accelerate(-1500.0f, 0.0f);
 	this->bodies.add(*moon);
 
-	this->ship = new CelestialObject(10.f, 0, "Spaceship");
+	this->ship = new Spaceship("Spaceship1");
 	ship->setFillColor(sf::Color::Yellow);
 	ship->setPosition(0,12000);
 	this->bodies.add(*ship);
@@ -135,7 +139,10 @@ void GameScene::loop_logic(){
 	if (this->selectedEntity != nullptr){
 		std::stringstream ss;
 		ss	<< "X:" << this->selectedEntity->getPosition().x
-			<< ", Y:" << this->selectedEntity->getPosition().y;
+			<< ", Y:" << this->selectedEntity->getPosition().y
+			<< std::endl
+			<< "dX:" << this->selectedEntity->getSpeed().x
+			<< ", dY:" << this->selectedEntity->getSpeed().y;
 		this->infoText2->setString(ss.str());
 	}
 
@@ -156,15 +163,8 @@ void GameScene::input(sf::Event& event){
 			switchScene(new MenuScene());
 
 	/*
-		Mouse
+		Mouse Movement
 	*/
-	// Zoom in/out
-	if (event.type == sf::Event::EventType::MouseWheelMoved){
-		if (event.mouseWheel.delta < 0)
-			zoom *= -event.mouseWheel.delta*0.95;
-		else
-			zoom *= event.mouseWheel.delta*1.05;
-	}
 	// Mouse interaction with game view
 	if (event.type == sf::Event::EventType::MouseButtonReleased){
 		// Get mouse pos
@@ -181,5 +181,16 @@ void GameScene::input(sf::Event& event){
 				this->selectedEntity = targetObject;
 			}
 		}
+	}
+
+	/*
+		MouseWheel
+	*/
+	// Zoom in/out
+	if (event.type == sf::Event::EventType::MouseWheelMoved){
+		if (event.mouseWheel.delta < 0)
+			zoom *= -event.mouseWheel.delta*0.95;
+		else
+			zoom *= event.mouseWheel.delta*1.05;
 	}
 }

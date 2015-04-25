@@ -1,6 +1,12 @@
 Changelog
 =========
 
+### 25 apr
+
+- Spaceship and Planet subclasses to CelestialObject created
+- Added planet speed to infotext in-game
+- Structual changes
+
 ### 24 apr
 
 - CelestialObjects now have a name
