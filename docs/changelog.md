@@ -1,6 +1,12 @@
 Changelog
 =========
 
+### 27 apr
+
+The spaceship update
+- Created and implemented spaceship sprite
+- Improved spaceship controls, now uses throttle and angle
+
 ### 25 apr
 
 - Spaceship and Planet subclasses to CelestialObject created

@@ -7,8 +7,15 @@
 
 class Spaceship : public CelestialObject {
 private:
+    float angle;
+    float lastAngle;
+    sf::Texture texture;
+    sf::Sprite sprite;
 public:
     Spaceship(std::string name);
+    void draw();
+    void rotate(float);
+    void throttle(float);
 };
 
 #endif

@@ -6,13 +6,16 @@
 
 #include "scene.h"
 #include "drawgroup.h"
+
 #include "celestialobject.h"
+#include "planet.h"
+#include "spaceship.h"
 
 class GameScene: public Scene {
 private:
 	DrawGroup bodies;
 	DrawGroup gui;
-	CelestialObject* ship;
+	Spaceship* ship;
 	sf::Vertex* vertex;
 	CelestialObject* selectedEntity;
 	sf::Text* infoText;

@@ -9,10 +9,6 @@
 #include "graphics.h"
 #include "main.h"
 
-#include "celestialobject.h"
-#include "planet.h"
-#include "spaceship.h"
-
 GameScene::GameScene() {
 	std::cout << "Switched to GameScene" << std::endl;
 	Planet* planet = new Planet(10000.f, 0, "Earth");
@@ -26,7 +22,6 @@ GameScene::GameScene() {
 	this->bodies.add(*moon);
 
 	this->ship = new Spaceship("Spaceship1");
-	ship->setFillColor(sf::Color::Yellow);
 	ship->setPosition(0,12000);
 	this->bodies.add(*ship);
 
@@ -53,7 +48,10 @@ GameScene::GameScene() {
 	// inside the main loop, between window.clear() and window.display()
 	this->gui.add(*infoText);
 	this->gui.add(*infoText2);
+	//
+	this->selectedEntity = nullptr;
 
+	// Views
 	this->guiview = new sf::View(sf::FloatRect(0,0,1280,720));
 	this->gameview = new sf::View();
 }
@@ -69,6 +67,7 @@ GameScene::~GameScene(){
 void GameScene::loop_graphics(sf::RenderWindow& window){
 	window.setView(*gameview);
 	bodies.draw(window);
+	this->ship->draw();
 	window.setView(*guiview);
 	gui.draw(window);
 }
@@ -76,13 +75,13 @@ void GameScene::loop_logic(){
 	// Spaceship WASD movement
 	float speed = 100;
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-		this->ship->accelerate(speed,0.f);
+		this->ship->rotate(-3.14*deltaTime.asSeconds());
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-		this->ship->accelerate(-speed,0.f);
+		this->ship->rotate(3.14*deltaTime.asSeconds());
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-		this->ship->accelerate(0.f,speed);
+		this->ship->throttle(speed);
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-		this->ship->accelerate(0.f,-speed);
+		this->ship->throttle(-speed);
 
 	// Iterate over all celestial objects
 	for (int co=0; co<bodies.size(); co++){
