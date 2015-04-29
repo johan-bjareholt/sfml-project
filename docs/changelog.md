@@ -1,6 +1,13 @@
 Changelog
 =========
 
+### 29 apr
+
+The Navball update
+- Added a new gui element, the navball. You can now see which direction your ship is facing even when zoomed out
+- Updated README
+- Small code restructuring
+
 ### 27 apr
 
 The spaceship update

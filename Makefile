@@ -11,7 +11,7 @@ CPPFLAGS += $(INCLUDES)
 LDFLAGS	 = $(LIBS)
 
 # File names
-FILEN=main menu game scene graphics drawgroup celestialobject planet spaceship
+FILEN=main menu game scene graphics drawgroup celestialobject planet spaceship navball
 # Prepend src/ directory to filenames
 FILEL=$(patsubst %,src/%,$(FILEN))
 

@@ -13,9 +13,10 @@ private:
     sf::Sprite sprite;
 public:
     Spaceship(std::string name);
-    void draw();
+    void draw(sf::RenderWindow&);
     void rotate(float);
     void throttle(float);
+    float getAngle();
 };
 
 #endif

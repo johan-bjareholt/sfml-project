@@ -4,6 +4,8 @@
 #include <SFML/Graphics.hpp>
 #include <string>
 
+const float PI = std::asin(-1);
+
 class CelestialObject : public sf::CircleShape {
 private:
 	std::string name;
@@ -27,7 +29,7 @@ public:
 	bool getCollision(sf::Vector2f& point); // Collision check for points
 	bool getCollision(sf::CircleShape&); // Collision check for CircleShape
 	void onCollision(CelestialObject& other);
-	float getAngle(sf::CircleShape&);
+	float getAngle(sf::CircleShape&); // Returns angle compared to a object in radians
 };
 
 #endif

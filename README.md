@@ -13,3 +13,16 @@ Todo:
 - Spaceship design
 - Realistic spaceship controlling
 - Make spaceship able to land on planets
+
+
+#### Controls
+
+- W: Throttle spaceship forward
+- S: Throttle spaceship backward (should probably be removed)
+- A: Rotate spaceship counter-clockwise
+- D: Rotate spaceship clockwise
+
+
+#### Todo
+
+- Rethink drawgroups, preferably without drawables

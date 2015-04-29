@@ -1,8 +1,6 @@
 #include <cmath>
 #include <iostream>
 
-const float PI = std::asin(-1);
-
 #include "celestialobject.h"
 
 CelestialObject::CelestialObject(float radius, float mass, std::string name) : sf::CircleShape(radius, radius){

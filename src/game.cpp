@@ -30,21 +30,16 @@ GameScene::GameScene() {
 	zoom = 3;
 
 
-	infoText = new sf::Text();
-	infoText2 = new sf::Text();
+	infoText = new sf::Text("", getFont(), 24);
+	infoText2 = new sf::Text("", getFont(), 24);
 	infoText2->setPosition(0,30);
-	// select the font
-	infoText->setFont(getFont()); // font is a sf::Font
-	infoText2->setFont(getFont());
-	// set the string to display
-	infoText->setString("");
-	infoText2->setString("");
-	// set the character size (in pixels, not points)
-	infoText->setCharacterSize(24);
-	infoText2->setCharacterSize(24);
 	// set the color
 	infoText->setColor(sf::Color::White);
 	infoText2->setColor(sf::Color::White);
+
+	// Navball
+	this->navball = new Navball(this->ship);
+
 	// inside the main loop, between window.clear() and window.display()
 	this->gui.add(*infoText);
 	this->gui.add(*infoText2);
@@ -60,6 +55,7 @@ GameScene::~GameScene(){
 	this->bodies.deleteAll();
 	this->gui.deleteAll();
 	delete vertex;
+	delete navball;
 	delete gameview;
 	delete guiview;
 }
@@ -67,17 +63,18 @@ GameScene::~GameScene(){
 void GameScene::loop_graphics(sf::RenderWindow& window){
 	window.setView(*gameview);
 	bodies.draw(window);
-	this->ship->draw();
+	this->ship->draw(window);
 	window.setView(*guiview);
 	gui.draw(window);
+	navball->draw(window, selectedEntity);
 }
 void GameScene::loop_logic(){
 	// Spaceship WASD movement
 	float speed = 100;
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-		this->ship->rotate(-3.14*deltaTime.asSeconds());
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 		this->ship->rotate(3.14*deltaTime.asSeconds());
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+		this->ship->rotate(-3.14*deltaTime.asSeconds());
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
 		this->ship->throttle(speed);
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
