@@ -9,6 +9,8 @@ private:
     sf::CircleShape background;
     sf::CircleShape frame;
     sf::RectangleShape directionPointer;
+    sf::RectangleShape movementPointer;
+    sf::RectangleShape destinationPointer;
     sf::Text distanceText;
     sf::Text speedText;
 public:

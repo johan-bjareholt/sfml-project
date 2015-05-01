@@ -1,6 +1,11 @@
 Changelog
 =========
 
+### 2 may
+
+- Added movement arrow on navball
+- Added target arrow on navball
+
 ### 29 apr
 
 The Navball update

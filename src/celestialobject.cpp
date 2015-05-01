@@ -87,7 +87,7 @@ void CelestialObject::onCollision(CelestialObject& other){
 	//std::cout << "Planets are colliding!" << std::endl;
 }
 
-float CelestialObject::getAngle(sf::CircleShape& otherObject){
+float CelestialObject::getAngle(CelestialObject& otherObject){
 	sf::Vector2f distance = this->getDistanceVector(otherObject);
 	float angle=std::atan2(distance.y,distance.x);
 	return angle;

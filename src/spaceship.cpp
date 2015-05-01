@@ -35,6 +35,6 @@ void Spaceship::throttle(float amount){
                      std::sin(angle)*amount);
 }
 
-float Spaceship::getAngle(){
+float Spaceship::getMovementAngle(){
     return this->angle;
 }

@@ -16,7 +16,7 @@ public:
     void draw(sf::RenderWindow&);
     void rotate(float);
     void throttle(float);
-    float getAngle();
+    float getMovementAngle();
 };
 
 #endif
