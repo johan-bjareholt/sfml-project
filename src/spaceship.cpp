@@ -13,8 +13,8 @@ Spaceship::Spaceship(std::string name) : CelestialObject(10.0f, 0, name){
     sprite.scale(sf::Vector2f(0.2f,0.2f));
     sprite.setOrigin(50,50);
 
-    this->angle = 0;
-    this->lastAngle = angle;
+    this->angle = 3.14/2;
+    this->lastAngle = 0;
 }
 
 void Spaceship::draw(sf::RenderWindow& window){

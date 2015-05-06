@@ -92,43 +92,42 @@ void GameScene::loop_logic(){
 				float m2 = targetObject->getMass();
 
 				// Calculate force between the celestial objects
-				float G = 9.8;
+				float G = 6.673;//*pow(10,-10);
 				float r = selectedObject->getDistance(*targetObject);
 				float force = G*((m1*m2)/(r*r));
+
+				// Calculate angle between objects
+				float forceAngle = selectedObject->getAngle(*targetObject);
+
+				// Totalspeed
+				float selectedSpeed = force/selectedObject->getMass();
+				//float selectedSpeed = force*targetObject->getMass();
+				float targetSpeed = force/targetObject->getMass();
+				//float targetSpeed = force*selectedObject->getMass();
+
+				//std::cout << force << std::endl;
+
+				// Calculate gravitational force
+				float accselectedX = std::cos(forceAngle)*selectedSpeed*deltaTime.asSeconds();
+				float accselectedY = std::sin(forceAngle)*selectedSpeed*deltaTime.asSeconds();
+				float acctargetX = std::cos(forceAngle+3.14)*targetSpeed*deltaTime.asSeconds();
+				float acctargetY = std::sin(forceAngle+3.14)*targetSpeed*deltaTime.asSeconds();
+
+				// Apply gravitational force
+				selectedObject->accelerate(accselectedX, accselectedY);
+				targetObject->accelerate(acctargetX, acctargetY);
+
+				//if (co==0 && co2==1)
+				//std::cout << forceAngle << ":" << acctargetX << "," << acctargetY << std::endl;
+				//std::cout << "cos: " << std::cos(forceAngle) << " sin:" << std::sin(forceAngle) << std::endl;
+
 				if (selectedObject->getCollision(*targetObject)){
 					selectedObject->onCollision(*targetObject);
-				}
-
-				else {
-					// Calculate angle between objects
-					float forceAngle = selectedObject->getAngle(*targetObject);
-
-					// Totalspeed
-					float selectedSpeed = force/selectedObject->getMass();
-					//float selectedSpeed = force*targetObject->getMass();
-					float targetSpeed = force/targetObject->getMass();
-					//float targetSpeed = force*selectedObject->getMass();
-
-					//std::cout << force << std::endl;
-
-					// Calculate gravitational force
-					float accselectedX = std::cos(forceAngle)*selectedSpeed*deltaTime.asSeconds();
-					float accselectedY = std::sin(forceAngle)*selectedSpeed*deltaTime.asSeconds();
-					float acctargetX = std::cos(forceAngle+3.14)*targetSpeed*deltaTime.asSeconds();
-					float acctargetY = std::sin(forceAngle+3.14)*targetSpeed*deltaTime.asSeconds();
-
-					// Apply gravitational force
-					selectedObject->accelerate(accselectedX, accselectedY);
-					targetObject->accelerate(acctargetX, acctargetY);
-
-					//if (co==0 && co2==1)
-					//std::cout << forceAngle << ":" << acctargetX << "," << acctargetY << std::endl;
-					//std::cout << "cos: " << std::cos(forceAngle) << " sin:" << std::sin(forceAngle) << std::endl;
 				}
 			}
 		}
 		// Apply force
-		selectedObject->move(selectedObject->getSpeed()*deltaTime.asSeconds());
+		selectedObject->move(selectedObject->getVelocity()*deltaTime.asSeconds());
 	}
 
 	// GUI
@@ -137,8 +136,8 @@ void GameScene::loop_logic(){
 		ss	<< "X:" << this->selectedEntity->getPosition().x
 			<< ", Y:" << this->selectedEntity->getPosition().y
 			<< std::endl
-			<< "dX:" << this->selectedEntity->getSpeed().x
-			<< ", dY:" << this->selectedEntity->getSpeed().y;
+			<< "dX:" << this->selectedEntity->getVelocity().x
+			<< ", dY:" << this->selectedEntity->getVelocity().y;
 		this->infoText2->setString(ss.str());
 	}
 

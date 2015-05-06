@@ -9,14 +9,15 @@ const float PI = std::asin(-1);
 class CelestialObject : public sf::CircleShape {
 private:
 	std::string name;
-	sf::Vector2f speed;
+	sf::Vector2f velocity;
 	float mass;
 public:
 	CelestialObject(float radius, float mass=0, std::string name="Unnamed");
 
 	void accelerate(float,float);
 	void setAcceleration(float,float);
-	sf::Vector2f& getSpeed();
+	sf::Vector2f& getVelocity();
+	float getSpeed();
 
 	std::string getName();
 	float getMass();

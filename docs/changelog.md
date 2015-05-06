@@ -1,6 +1,14 @@
 Changelog
 =========
 
+### 7 may
+
+- Renamed speed to velocity
+- CelestialObjects now bounces unrealisticly on collision
+- Added some more helper functions to CelestialObject
+- Fixed spaceship start rotation
+- Started working on speed and distance display
+
 ### 2 may
 
 - Added movement arrow on navball

@@ -3,6 +3,8 @@
 
 #include <cmath>
 #include <iostream>
+#include <iomanip>
+#include <sstream>
 
 Navball::Navball(Spaceship* spaceship) {
     this->spaceship = spaceship;
@@ -38,18 +40,18 @@ Navball::Navball(Spaceship* spaceship) {
     this->destinationPointer.setPosition(pos.x, pos.y);
     this->destinationPointer.setOrigin(2,0);
 
-    this->distanceText = sf::Text("",getFont(), 30);
-    this->speedText = sf::Text("", getFont(), 30);
-    this->distanceText.setPosition(pos.x+radius, pos.y);
-    this->speedText.setPosition(pos.x-radius-60, pos.y);
+    this->distanceText = sf::Text("",getFont(), 20);
+    this->speedText = sf::Text("", getFont(), 20);
+    this->distanceText.setPosition(pos.x+radius, pos.y+radius-20);
+    this->speedText.setPosition(pos.x-radius-60, pos.y+radius-20);
 }
 
 void Navball::draw(sf::RenderWindow& window, CelestialObject* selectedObject){
     float directionAngle = (this->spaceship->getMovementAngle()/3.14)*180+90;
     this->directionPointer.setRotation(directionAngle);
 
-    float movementAngle = std::atan2(this->spaceship->getSpeed().x,
-                                     this->spaceship->getSpeed().y);
+    float movementAngle = std::atan2(this->spaceship->getVelocity().x,
+                                     this->spaceship->getVelocity().y);
     this->movementPointer.setRotation((movementAngle/3.14)*180+180);
 
     if (selectedObject != nullptr){
@@ -69,9 +71,20 @@ void Navball::draw(sf::RenderWindow& window, CelestialObject* selectedObject){
     window.draw(this->destinationPointer);
     window.draw(this->background);
 
+    std::stringstream ss;
+
     if (selectedObject != nullptr){
-        this->distanceText.setString(std::to_string(selectedObject->getDistance(*this->spaceship)));
+        ss  << std::fixed << std::setprecision(1)
+            << (selectedObject->getDistance(*this->spaceship)
+                -this->spaceship->getRadius() - selectedObject->getRadius());
+        this->distanceText.setString(ss.str());
+        ss.clear();
+        //this->distanceText.setString(std::to_string(selectedObject->getDistance(*this->spaceship)));
     }
-    float speed = sqrt(pow(this->spaceship->getSpeed().x,2)+pow(this->spaceship->getSpeed().y,2));
-    this->speedText.setString(std::to_string(speed));
+    window.draw(this->distanceText);
+    float speed = this->spaceship->getSpeed();
+    ss << std::fixed << std::setprecision(1) << speed;
+    this->speedText.setString(ss.str());
+    //this->speedText.setString(std::to_string(speed));
+    window.draw(this->speedText);
 }
