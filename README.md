@@ -20,3 +20,4 @@ A more detailed changelog can be found in docs/changelog.md
 - Planet design
 - Make spaceship able to land on planets
 - Rethink drawgroups, preferably without drawables
+- Fix so font isn't loaded once for every getFont()

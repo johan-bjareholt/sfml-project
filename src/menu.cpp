@@ -8,25 +8,24 @@
 MenuScene::MenuScene() {
 	std::cout << "Switched to MenuScene" << std::endl;
 	this->drawgroup = new DrawGroup();
-	sf::CircleShape* shape = new sf::CircleShape(100.f);
-	shape->setFillColor(sf::Color::White);
-
-	this->drawgroup->add(*shape);
 
 	sf::Text* text = new sf::Text();
 	// select the font
-	text->setFont(getFont()); // font is a sf::Font
-	// set the string to display
-	text->setString("Hello world");
-	// set the character size
-	text->setCharacterSize(50); // in pixels, not points!
-	// set the color
+	text->setFont(getFont());
+	text->setString("Spacesim-2d");
+	text->setCharacterSize(50);
 	text->setColor(sf::Color::White);
-	// set the position
-	text->setPosition(200,100);
+	text->setPosition(500,200);
 	//text->setStyle(sf::Text::Bold | sf::Text::Underlined);
-	// inside the main loop, between window.clear() and window.display()
 	this->drawgroup->add(*text);
+
+	sf::Text* text2 = new sf::Text();
+	text2->setFont(getFont());
+	text2->setString("Press Enter to start");
+	text2->setCharacterSize(30);
+	text2->setColor(sf::Color::White);
+	text2->setPosition(500,250);
+	this->drawgroup->add(*text2);
 }
 
 MenuScene::~MenuScene(){
