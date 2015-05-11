@@ -36,6 +36,13 @@ float CelestialObject::getSpeed(){
 	return sqrt(pow(this->velocity.x,2)+pow(this->velocity.y,2));
 }
 
+float CelestialObject::getSpeed(CelestialObject& other){
+	sf::Vector2f velocity = this->velocity;
+	velocity.x -= other.getVelocity().x;
+	velocity.y -= other.getVelocity().y;
+	return sqrt(pow(this->velocity.x,2)+pow(this->velocity.y,2));
+}
+
 float CelestialObject::getMass(){
 	return this->mass;
 }

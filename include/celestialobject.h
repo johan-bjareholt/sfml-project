@@ -18,6 +18,7 @@ public:
 	void setAcceleration(float,float);
 	sf::Vector2f& getVelocity();
 	float getSpeed();
+	float getSpeed(CelestialObject&); // Get relative speed
 
 	std::string getName();
 	float getMass();

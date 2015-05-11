@@ -24,7 +24,7 @@ MenuScene::MenuScene() {
 	text2->setString("Press Enter to start");
 	text2->setCharacterSize(30);
 	text2->setColor(sf::Color::White);
-	text2->setPosition(500,250);
+	text2->setPosition(500,270);
 	this->drawgroup->add(*text2);
 }
 
@@ -42,7 +42,6 @@ void MenuScene::loop_graphics(sf::RenderWindow& window){
 }
 
 void MenuScene::input(sf::Event& event){
-	//if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return))
 	if (event.type == sf::Event::EventType::KeyPressed){
 		if (event.key.code == sf::Keyboard::Return){
 			switchScene(new GameScene());

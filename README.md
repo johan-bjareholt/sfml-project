@@ -21,3 +21,4 @@ A more detailed changelog can be found in docs/changelog.md
 - Make spaceship able to land on planets
 - Rethink drawgroups, preferably without drawables
 - Fix so font isn't loaded once for every getFont()
+- Move gravitational loop away from game.loop}\_logic

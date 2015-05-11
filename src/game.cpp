@@ -43,7 +43,8 @@ GameScene::GameScene() {
 	// inside the main loop, between window.clear() and window.display()
 	this->gui.add(*infoText);
 	this->gui.add(*infoText2);
-	//
+
+	// Initialize other variables
 	this->selectedEntity = nullptr;
 
 	// Views
@@ -61,13 +62,19 @@ GameScene::~GameScene(){
 }
 
 void GameScene::loop_graphics(sf::RenderWindow& window){
+	// Set game view
 	window.setView(*gameview);
+	// Draw game elements
 	bodies.draw(window);
 	this->ship->draw(window);
+
+	// Set default view
 	window.setView(*guiview);
+	// Draw GUI
 	gui.draw(window);
 	navball->draw(window, selectedEntity);
 }
+
 void GameScene::loop_logic(){
 	// Spaceship WASD movement
 	float speed = 100;
@@ -82,17 +89,19 @@ void GameScene::loop_logic(){
 
 	// Iterate over all celestial objects
 	for (int co=0; co<bodies.size(); co++){
+		// Selected CelestialObject
 		CelestialObject* selectedObject = dynamic_cast<CelestialObject*>(bodies[co]);
 		float m1 = selectedObject->getMass();
 
 		// Calculate force on/from all other celestial objects
 		for (int co2=co+1; co2<bodies.size(); co2++){
 			if (co2 != co){
+				// Other CelestialObject to interfere with the selected one
 				CelestialObject* targetObject = dynamic_cast<CelestialObject*>(bodies[co2]);
 				float m2 = targetObject->getMass();
 
 				// Calculate force between the celestial objects
-				float G = 6.673;//*pow(10,-10);
+				float G = 6.673;
 				float r = selectedObject->getDistance(*targetObject);
 				float force = G*((m1*m2)/(r*r));
 
@@ -101,11 +110,7 @@ void GameScene::loop_logic(){
 
 				// Totalspeed
 				float selectedSpeed = force/selectedObject->getMass();
-				//float selectedSpeed = force*targetObject->getMass();
 				float targetSpeed = force/targetObject->getMass();
-				//float targetSpeed = force*selectedObject->getMass();
-
-				//std::cout << force << std::endl;
 
 				// Calculate gravitational force
 				float accselectedX = std::cos(forceAngle)*selectedSpeed*deltaTime.asSeconds();
@@ -117,10 +122,7 @@ void GameScene::loop_logic(){
 				selectedObject->accelerate(accselectedX, accselectedY);
 				targetObject->accelerate(acctargetX, acctargetY);
 
-				//if (co==0 && co2==1)
-				//std::cout << forceAngle << ":" << acctargetX << "," << acctargetY << std::endl;
-				//std::cout << "cos: " << std::cos(forceAngle) << " sin:" << std::sin(forceAngle) << std::endl;
-
+				// Collision handling
 				if (selectedObject->getCollision(*targetObject)){
 					selectedObject->onCollision(*targetObject);
 				}
@@ -130,7 +132,10 @@ void GameScene::loop_logic(){
 		selectedObject->move(selectedObject->getVelocity()*deltaTime.asSeconds());
 	}
 
-	// GUI
+	/*
+		GUI
+	*/
+	// InfoText
 	if (this->selectedEntity != nullptr){
 		std::stringstream ss;
 		ss	<< "X:" << this->selectedEntity->getPosition().x
@@ -140,6 +145,10 @@ void GameScene::loop_logic(){
 			<< ", dY:" << this->selectedEntity->getVelocity().y;
 		this->infoText2->setString(ss.str());
 	}
+
+	/*
+		Views
+	*/
 
 	// Calculate new camera position and size
 	int cameraW = 350*zoom;

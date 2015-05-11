@@ -8,9 +8,9 @@
 
 Navball::Navball(Spaceship* spaceship) {
     this->spaceship = spaceship;
-    sf::RenderWindow* window = getWindow();
 
-    sf::Vector2u pos = window->getSize();
+    // Navball pos and size
+    sf::Vector2u pos = getWindow()->getSize();
     int radius = pos.x/20;
     pos.x /= 2;
     pos.y -= radius+10;
@@ -79,12 +79,10 @@ void Navball::draw(sf::RenderWindow& window, CelestialObject* selectedObject){
                 -this->spaceship->getRadius() - selectedObject->getRadius());
         this->distanceText.setString(ss.str());
         ss.clear();
-        //this->distanceText.setString(std::to_string(selectedObject->getDistance(*this->spaceship)));
     }
     window.draw(this->distanceText);
     float speed = this->spaceship->getSpeed();
     ss << std::fixed << std::setprecision(1) << speed;
     this->speedText.setString(ss.str());
-    //this->speedText.setString(std::to_string(speed));
     window.draw(this->speedText);
 }

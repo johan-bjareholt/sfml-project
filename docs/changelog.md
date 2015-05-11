@@ -1,6 +1,12 @@
 Changelog
 =========
 
+### 11 may
+
+- Both removed and added comments
+- Code cleanup
+- Added presentation notes
+
 ### 7 may
 
 - Renamed speed to velocity
