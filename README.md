@@ -22,3 +22,8 @@ A more detailed changelog can be found in docs/changelog.md
 - Rethink drawgroups, preferably without drawables
 - Fix so font isn't loaded once for every getFont()
 - Move gravitational loop away from game.loop}\_logic
+
+#### Screenshots
+
+![Ship view](https://raw.githubusercontent.com/johan-bjareholt/spacesim-2d/master/screenshots/spacesim2d-1.png)
+![Planetary view](https://raw.githubusercontent.com/johan-bjareholt/spacesim-2d/master/screenshots/spacesim2d-1.png)
