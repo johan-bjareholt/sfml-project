@@ -26,4 +26,4 @@ A more detailed changelog can be found in docs/changelog.md
 #### Screenshots
 
 ![Ship view](https://raw.githubusercontent.com/johan-bjareholt/spacesim-2d/master/screenshots/spacesim2d-1.png)
-![Planetary view](https://raw.githubusercontent.com/johan-bjareholt/spacesim-2d/master/screenshots/spacesim2d-1.png)
+![Planetary view](https://raw.githubusercontent.com/johan-bjareholt/spacesim-2d/master/screenshots/spacesim2d-2.png)
