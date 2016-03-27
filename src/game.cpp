@@ -143,7 +143,7 @@ void GameScene::loop_logic(){
 			<< std::endl
 			<< "dX:" << this->selectedEntity->getVelocity().x
 			<< ", dY:" << this->selectedEntity->getVelocity().y;
-		this->infoText2->setString(ss.str());
+		this->infoText2->setString(sf::String(ss.str()));
 	}
 
 	/*

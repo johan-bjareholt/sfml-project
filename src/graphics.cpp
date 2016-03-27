@@ -14,7 +14,7 @@ void createWindow(sf::Vector2u size, std::string title){
 	// Options
     int windowOptions = sf::Style::None | sf::Style::Titlebar | sf::Style::Close;
     // Create window
-    window = new sf::RenderWindow(sf::VideoMode(size.x, size.y), title, windowOptions);
+    window = new sf::RenderWindow(sf::VideoMode(size.x, size.y), sf::String(title), windowOptions);
     // Uncomment to enable vsync
     window->setVerticalSyncEnabled(true);
 }
